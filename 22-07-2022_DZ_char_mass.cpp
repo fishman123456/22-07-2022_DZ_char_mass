@@ -9,31 +9,32 @@
 // Код взят отсюда
 
 #include <iostream>
+#include <string>
 #include <vector>
-#include <algorithm>
-#include <Windows.h>
+#include <cstdlib>
+#include <sstream>
+
 using namespace std;
-void show_vector(vector<string>& a_vec)
+
+int main()
 {
-    for (vector<string>::iterator it = a_vec.begin(); it != a_vec.end(); ++it)
-        cout  << *it << "\t";
-}
-//int argc, const char* argv[]
+    vector<int> num;
+    setlocale(LC_ALL, "Russian");
 
-int main() {
-    system("chcp 1251");
-    SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
-    SetConsoleOutputCP(1251); // установка кодовой страницы win-cp 1251 в поток вывода
-    int val_char{ 0 };
-    vector<string> myStrings{ "One", "Two", "Three" };
+    string str1 = "1,2,2333,    4,15, 6";
 
-    // std::find()  finds the first element that matches a value
-    auto it = find(begin(myStrings), end(myStrings), "Three");
-    if (it != end(myStrings)) {
-        val_char++;
-        cout << "We found this string; do something..." << endl;
-        show_vector(myStrings);
-        //cout <<"\nПорядковый номер строки (считаем от нуля) :\t"<< val_char<<"\n";
-
+    int numRes;
+    stringstream s(str1);
+    while (!s.eof())
+    {
+        (s >> numRes).get();
+        num.push_back(numRes);
     }
+
+    for (unsigned int i = 0; i < num.size(); i++)
+        cout << num[i] << endl;
+
+    cin.get();
+
+    return(EXIT_SUCCESS);
 }
