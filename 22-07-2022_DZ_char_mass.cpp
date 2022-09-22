@@ -32,37 +32,23 @@ int main()
 	vector<char> vec(s1.begin(), s1.end()); // заполняем вектор s строкой поиска
 	vector<char> vec2(s2.begin(), s2.end()); // заполняем вектор s2 строкой поиска
 	//  используем итераторы для перебора элементов вектора
-	auto iter1 = s1.begin();  // получаем итератор строки поиска
-	auto iter2 = s2.begin();  // получаем итератор искомого результата
+	auto iter1 = s1.begin();  // "abracadabra" получаем итератор строки поиска
+	auto iter2 = s2.begin();  // "abr" получаем итератор искомого результата
 
-	while (iter1 != s1.end()-1 )    // пока не дойдем до конца
+	while (iter1 != s1.end())    // пока не дойдем до конца
 	{
 		cout << *iter1 << "\n";// получаем элементы через итератор
 
-		if (s1[inds1] == s2[inds2]&& s1[inds1+1] == s2[inds2+1]&&s1[inds1+2] == s2[inds2+2])
-		{
-					vec1 = true;
-					inds2 = 0;
-		}
-		if (vec1==true)
-		{
-			for (size_t i = 0; i < 3; i++)
-			{
-				if (*iter1 == *iter2) {
-					cout << "совпадение c\t" << *iter1 << "\tэлементом" << "\n";
-					++iter2;
-					ends2++;
-					++iter1;
-					if (s2.size() == ends2)
-					{
-						iter2 -= ends2;
-						ends2 = -1;
-						//iter - n: возвращает итератор, который смещен от итератора iter на n позиций назад
-					}
-				}
-			}
-		}
-		vec1 = false;
+		/*if (s1[inds1] == s2[inds2] && s1[inds1 + 1] == s2[inds2 + 1] && s1[inds1 + 2] == s2[inds2 + 2]&& iter2 != s2.end())
+		{*/
+				//do
+				//{
+				//	cout << *iter1 << "\n";// получаем элементы через итератор
+				//	cout << "совпадение c\t" << *iter1 << "\tэлементом" << "\n";
+				//	++iter1; ++iter2; inds2++;
+				//} while (*iter1 == *iter2 || inds2 != 3 && iter2 != s2.end());
+				//++iter1;
+		/*}*/
 		++iter1;             // перемещаемся вперед на один элемент
 	}
 }
