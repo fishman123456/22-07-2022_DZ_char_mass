@@ -25,11 +25,10 @@ int main()
 	string s2;
 	s1 = "abracadabra"; // строка поиска
 	s2 = "abr";         // строка искомого результата
-	int ends2{ 0 };
-	bool vec1 = false;
+	bool vec = false;
 	int inds1 = 0;
 	int inds2 = 0;
-	vector<char> vec(s1.begin(), s1.end()); // заполняем вектор s строкой поиска
+	vector<char> vec1(s1.begin(), s1.end()); // заполняем вектор s строкой поиска
 	vector<char> vec2(s2.begin(), s2.end()); // заполняем вектор s2 строкой поиска
 	//  используем итераторы для перебора элементов вектора
 	auto iter1 = s1.begin();  // "abracadabra" получаем итератор строки поиска
@@ -37,18 +36,17 @@ int main()
 
 	while (iter1 != s1.end())    // пока не дойдем до конца
 	{
-		cout << *iter1 << "\n";// получаем элементы через итератор
-
-		/*if (s1[inds1] == s2[inds2] && s1[inds1 + 1] == s2[inds2 + 1] && s1[inds1 + 2] == s2[inds2 + 2]&& iter2 != s2.end())
-		{*/
-				//do
-				//{
-				//	cout << *iter1 << "\n";// получаем элементы через итератор
-				//	cout << "совпадение c\t" << *iter1 << "\tэлементом" << "\n";
-				//	++iter1; ++iter2; inds2++;
-				//} while (*iter1 == *iter2 || inds2 != 3 && iter2 != s2.end());
-				//++iter1;
-		/*}*/
-		++iter1;             // перемещаемся вперед на один элемент
+		//cout << *iter1 << endl;// получаем элементы через итератор
+		if (s1[inds1] == s2[inds2] && inds1 < s1.size()) {
+			for (size_t i = 0, inds2 = 0; i < 2; i++, ++inds2, ++inds1)
+			{
+				advance(iter2, inds2);
+				advance(iter1, inds1);
+				cout << *iter1 << "\t";// получаем элементы через итератор
+				cout << "s1 == s2" << "\n";
+			}
+		}
+		else break;
+		inds1++;        // перемещаемся вперед на один элемент
 	}
 }
