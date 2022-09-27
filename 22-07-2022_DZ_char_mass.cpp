@@ -5,17 +5,23 @@
 // в которой взяты в ( ) - скобки.
 // например, если параметрами были строки  "abracadabra" и "ab"
 // то вернуть надо "(ab)racad(ab)ra"
-//https://www.stackfinder.ru/questions/34387181/find-char-element-in-array-of-char-in-c
+// https://www.stackfinder.ru/questions/34387181/find-char-element-in-array-of-char-in-c
 // https://ru.stackoverflow.com/questions/717340/%D0%9A%D0%B0%D0%BA-%D0%B8%D0%BD%D0%B8%D1%86%D0%B8%D0%B0%D0%BB%D0%B8%D0%B7%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-vectorchar-%D1%81%D1%82%D1%80%D0%BE%D0%BA%D0%BE%D0%B9
 // Код взят отсюда
 // нихрена не доделал с итераторами надо как то по другому
-
+// 27-09-2022  начинаем с начала изучать итераторы
+// Итераторы в общем случае становятся не валидными после позиции вставки элемента.
+// А если происходит перераспределение памяти у вектора, то и итераторы до позиции вставки также становятся не валидными, 
+// что имеет место в случае вашего цикла, который в противном случае может даже стать бесконечным.
+//
+// Если вы еще пока не используете алгоритмы, то ниже приведена демонстрационная программа, 
+// которая показывает, как можно выполнить поставленную задачу, используя только циклы.
+// Ура заработало....27-09-2022   15:53
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cstdlib>
 #include <sstream>
-
 using namespace std;
 
 int main()
@@ -23,30 +29,108 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	string s1;
 	string s2;
-	s1 = "abracadabra"; // строка поиска
-	s2 = "abr";         // строка искомого результата
+	//s1 = "abracadabra"; // строка поиска
+	//s2 = "(";         // строка искомого результата
 	bool vec = false;
-	int inds1 = 0;
-	int inds2 = 0;
-	vector<char> vec1(s1.begin(), s1.end()); // заполняем вектор s строкой поиска
-	vector<char> vec2(s2.begin(), s2.end()); // заполняем вектор s2 строкой поиска
-	//  используем итераторы для перебора элементов вектора
-	auto iter1 = s1.begin();  // "abracadabra" получаем итератор строки поиска
-	auto iter2 = s2.begin();  // "abr" получаем итератор искомого результата
+	int iter1_count1 = 0;// счётчик для проверок на совпадение
+	int iter1_count2 = 0;
+	int n = 3;
+	int i = 0;
+	cout << "введите первый вектор\t";
+	cin >> s1;
+	cout << "введите второй вектор\t";
+	cin >> s2;
+	//vector<char> vec1(10, 'v');
+	vector<char> vec1(s1.begin(), s1.end()); // заполняем вектор s1 строкой 
+	vec1.reserve(50); // создаём запас в векторе, для создания новых элементов
+	vector<char> vec2(s2.begin(), s2.end()); //s2 = "abr";         // строка искомого результата
+	vector<char> ::iterator it_1;
+	vector<char> ::iterator it_2;
+	it_2 = vec2.begin(); //s2 = "abr";         // строка искомого результата
 
-	while (iter1 != s1.end())    // пока не дойдем до конца
-	{
-		//cout << *iter1 << endl;// получаем элементы через итератор
-		if (s1[inds1] == s2[inds2] && inds1 < s1.size()) {
-			for (size_t i = 0, inds2 = 0; i < 2; i++, ++inds2, ++inds1)
-			{
-				advance(iter2, inds2);
-				advance(iter1, inds1);
-				cout << *iter1 << "\t";// получаем элементы через итератор
-				cout << "s1 == s2" << "\n";
-			}
+	cout << "vec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора
+
+	for (it_1 = vec1.begin(); it_1 != vec1.end(); it_1++, it_2++,  i++) {
+
+		if (it_2 == vec2.end()) // если конец вектора, то переходим в начало
+		{
+			it_2 = vec2.begin(); // переходим в начало вектора
 		}
-		else break;
-		inds1++;        // перемещаемся вперед на один элемент
+		if (*it_1 != *it_2)//(vec1 с итератором it_1 где ищем ) (vec2 с итератором it_2 что ищем )
+		{
+			cout << *it_1 << "\n";  // 
+
+		}
+		if (*it_1 == *it_2)//(vec1 с итератором it_1 где ищем ) (vec2 с итератором it_2 что ищем )
+		{
+			iter1_count1 = i;// счётчик для проверок на совпадение порядковый элемент вектора 
+			//vec1.insert(vec1.begin()+1, 2);
+			cout << *it_1 << "\n";  // 
+			cout << "*it_1== *it_2\t = " << endl;
+			cout << *it_2 << "\n";
+		}
+		/*break;*/
+		if (it_1 == vec1.end() - 1) // если предпоследний элемент
+		{
+			cout << "\nvec1.capacity()\t" << vec1.capacity() << endl;//выводим запас по памяти вектора
+			cout << "\nvec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора	
+		}
 	}
+	auto it_3 = vec1.begin(); // инициализ. итератор началом вектора
+	vec1.emplace(it_3+ iter1_count1,'('); // вставляем скобку перед найденным элементом 
+	vec1.emplace(it_3 + iter1_count1+2, ')'); // вставляем скобку после найденного элемента
+	cout << "\nvec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора
+	// вывод вектора на экран
+	for (it_1 = vec1.begin(); it_1 != vec1.end(); it_1++, i++)
+	{
+		cout << *it_1;
+	}
+	cout << "\n" << iter1_count1 << "\n"; // счётчик для проверок на совпадение
+	//vec1.shrink_to_fit(); // убираем лишние элементы
 }
+
+
+
+
+
+
+
+
+
+
+// Первая версия неудачная
+// 
+// 
+// 
+// 
+// 
+//vector<char> vec2(s2.begin(), s2.end()); // заполняем вектор s2 строкой поиска "abr ";         // строка искомого результата
+////  используем итераторы для перебора элементов вектора
+//auto iter1 = s1.begin();  // "abracadabra" получаем итератор строки поиска
+//auto iter2 = s2.begin();  // "abr" получаем итератор искомого результата
+
+//while (iter_count1<s1.length())    // пока не дойдем до конца
+//{
+//	cout << "размер вектора s1\t" << s1.length() << endl;
+//	cout << "размер вектора s2\t" << s2.length() << endl;
+//	//cout << *iter1 << endl;// получаем элементы через итератор
+//	if (s1.at(iter_count1) == s2.at(iter_count2) && iter_count1 != s1.length()) {
+//		for (size_t i = 0, iter_count2 = 0; i < 3; ++i, iter_count1++)
+//		{
+//			if (iter_count1 < s1.length()) { break; }
+//			cout << "где ищем \t" << *iter2 << "\t";// получаем элементы через итератор// "abracadabra" получаем итератор строки поиска
+//			cout << "что ищем \t" << *iter1 << "\t";// получаем элементы через итератор// "abr" получаем итератор искомого результата
+//			advance(iter2, i);
+//			advance(iter1, iter_count1);
+//			
+//			cout << "s1 == s2" << "\n";
+
+//		}
+//		s2.begin();
+//	}
+//	if (iter_count1 < s1.length()+1)
+//	{
+//		iter_count1+1;        // перемещаемся вперед на один элемент
+//	}
+
+//}
