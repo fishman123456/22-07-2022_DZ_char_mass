@@ -29,6 +29,7 @@ int main()
 	setlocale(LC_ALL, "Russian");
 	string s1;
 	string s2;
+	string s4;
 	//s1 = "abracadabra"; // строка поиска
 	//s2 = "(";         // строка искомого результата
 	bool vec = false;
@@ -44,8 +45,10 @@ int main()
 	vector<char> vec1(s1.begin(), s1.end()); // заполняем вектор s1 строкой 
 	vec1.reserve(50); // создаём запас в векторе, для создания новых элементов
 	vector<char> vec2(s2.begin(), s2.end()); //s2 = "abr";         // строка искомого результата
+	vector<int> vec4(s4.begin(), s4.end()); // записываем порядковый номер совпадения элементов для расстановки скобок
 	vector<char> ::iterator it_1;
 	vector<char> ::iterator it_2;
+	vector<int> ::iterator it_4;
 	it_2 = vec2.begin(); //s2 = "abr";         // строка искомого результата
 
 	cout << "vec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора
@@ -63,6 +66,7 @@ int main()
 		}
 		if (*it_1 == *it_2)//(vec1 с итератором it_1 где ищем ) (vec2 с итератором it_2 что ищем )
 		{
+			vec4.push_back(i);
 			iter1_count1 = i;// счётчик для проверок на совпадение порядковый элемент вектора 
 			//vec1.insert(vec1.begin()+1, 2);
 			cout << *it_1 << "\n";  // 
@@ -70,7 +74,7 @@ int main()
 			cout << *it_2 << "\n";
 		}
 		/*break;*/
-		if (it_1 == vec1.end() - 1) // если предпоследний элемент
+		if (it_1 == vec1.end() - 1) // если предпоследний элем
 		{
 			cout << "\nvec1.capacity()\t" << vec1.capacity() << endl;//выводим запас по памяти вектора
 			cout << "\nvec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора	
