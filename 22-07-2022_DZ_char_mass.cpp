@@ -90,14 +90,14 @@ int main()
 	int p = 0;
 	for ( it_4 = vec4.begin(); it_4 != vec4.end(); it_4++)
 	{
-		io = *it_4+p;
+		io=*it_4;
 		
 		vec1.emplace(it_3 + io, '('); // вставляем скобку перед найденным элементом 
 		vec1.emplace(it_3 + io + 2, ')'); // вставляем скобку после найденного элемента
 	
 		cout << "\nvec1.size()\t" << vec1.size() << "\n"; // выводим размер вектора
 		// вывод вектора на экран
-		p + 2;
+		
 	}
 	
 	for (it_1 = vec1.begin(); it_1 != vec1.end(); it_1++, i++)
